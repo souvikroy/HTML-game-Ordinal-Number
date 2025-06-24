@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const slots = document.querySelectorAll('.part-slot');
         
         // Initialize level 1 visual feedback
-        updateGridbotMessage('level1-instructions', 'Build your race car by placing the parts in the correct order. Start with the 1st part and continue through the 5th part. Drag and drop each part to the car!', true);
+        updateInstructionText('level1-instructions', 'Place car parts in order! Start with 1st and go to 5th.', true);
         
         parts.forEach(part => {
             part.addEventListener('dragstart', (e) => {
@@ -137,10 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     part.style.opacity = '0.4';
                 }, 0);
                 
-                // Update GridBot message when dragging
+                // Update instruction text when dragging
                 const partId = part.dataset.part;
                 const ordinals = ['', 'first', 'second', 'third', 'fourth', 'fifth'];
-                updateGridbotMessage('level1-instructions', `Great! You're moving the ${ordinals[partId]} part. Find the right spot for it!`);
+                updateInstructionText('level1-instructions', `Great! Moving the ${ordinals[partId]} part. Find the right spot!`);
             });
             
             part.addEventListener('dragend', () => {
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Reset message if no drop occurred
                 setTimeout(() => {
-                    updateGridbotMessage('level1-instructions', 'Build your race car by placing the parts in the correct order. Remember the ordinal sequence!');
+                    updateInstructionText('level1-instructions', 'Place car parts in order! Start with 1st and go to 5th.');
                 }, 500);
             });
             
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Show correct placement feedback
                 slot.classList.add('correct');
-                updateGridbotMessage('level1-instructions', `Perfect! You placed the ${getOrdinalWord(partId)} part correctly!`);
+                updateInstructionText('level1-instructions', `Perfect! You placed the ${getOrdinalWord(partId)} part correctly!`);
                 setTimeout(() => {
                     slot.classList.remove('correct');
                 }, 1000);
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // Wrong placement feedback
                 showWrongPlacementFeedback(slot);
-                updateGridbotMessage('level1-instructions', `Hmm, that's not quite right. Remember, we need to place the ${getOrdinalWord(slotId)} part here.`);
+                updateInstructionText('level1-instructions', `Not quite right. Place the ${getOrdinalWord(slotId)} part here.`);
             }
         }
         
@@ -491,9 +491,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     /**
-     * Update GridBot message with optional animation
+     * Update instruction panel text with optional animation
      */
-    function updateGridbotMessage(elementId, message, withAnimation = false) {
+    function updateInstructionText(elementId, message, withAnimation = false) {
         const element = document.getElementById(elementId);
         if (!element) return;
         
@@ -504,7 +504,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.style.opacity = '1';
             }, 300);
         } else {
+            element.style.opacity = '0.7';
             element.textContent = message;
+            
+            // Flash effect
+            setTimeout(() => {
+                element.style.opacity = '1';
+            }, 50);
         }
     }
     
