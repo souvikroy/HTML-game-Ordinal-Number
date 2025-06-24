@@ -127,17 +127,72 @@ document.addEventListener('DOMContentLoaded', () => {
         const parts = document.querySelectorAll('.part');
         const slots = document.querySelectorAll('.part-slot');
         
+        // Initialize level 1 visual feedback
+        updateGridbotMessage('level1-instructions', 'Build your race car by placing the parts in the correct order. Start with the 1st part and continue through the 5th part. Drag and drop each part to the car!', true);
+        
         parts.forEach(part => {
             part.addEventListener('dragstart', (e) => {
                 e.dataTransfer.setData('text/plain', part.dataset.part);
                 setTimeout(() => {
                     part.style.opacity = '0.4';
                 }, 0);
+                
+                // Update GridBot message when dragging
+                const partId = part.dataset.part;
+                const ordinals = ['', 'first', 'second', 'third', 'fourth', 'fifth'];
+                updateGridbotMessage('level1-instructions', `Great! You're moving the ${ordinals[partId]} part. Find the right spot for it!`);
             });
             
             part.addEventListener('dragend', () => {
                 part.style.opacity = '1';
+                
+                // Reset message if no drop occurred
+                setTimeout(() => {
+                    updateGridbotMessage('level1-instructions', 'Build your race car by placing the parts in the correct order. Remember the ordinal sequence!');
+                }, 500);
             });
+            
+            // Add touch support for mobile
+            part.addEventListener('touchstart', (e) => {
+                const touchObj = e.changedTouches[0];
+                part.dataset.touchId = touchObj.identifier;
+                part.dataset.touchStartX = touchObj.clientX;
+                part.dataset.touchStartY = touchObj.clientY;
+                part.classList.add('dragging');
+                e.preventDefault();
+            }, {passive: false});
+            
+            part.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = Array.from(e.changedTouches).find(t => t.identifier === parseInt(part.dataset.touchId));
+                if (!touch) return;
+                
+                const x = touch.clientX - part.dataset.touchStartX;
+                const y = touch.clientY - part.dataset.touchStartY;
+                
+                part.style.transform = `translate(${x}px, ${y}px)`;
+            }, {passive: false});
+            
+            part.addEventListener('touchend', (e) => {
+                const touch = Array.from(e.changedTouches).find(t => t.identifier === parseInt(part.dataset.touchId));
+                if (!touch) return;
+                
+                part.style.transform = '';
+                part.classList.remove('dragging');
+                
+                // Find the slot under touch position
+                const el = document.elementFromPoint(touch.clientX, touch.clientY);
+                const slot = el.closest('.part-slot');
+                
+                if (slot) {
+                    const partId = parseInt(part.dataset.part);
+                    const slotId = parseInt(slot.dataset.slot);
+                    
+                    handlePartPlacement(partId, slotId, slot, part);
+                }
+                
+                e.preventDefault();
+            }, {passive: false});
         });
         
         slots.forEach(slot => {
@@ -157,24 +212,65 @@ document.addEventListener('DOMContentLoaded', () => {
                 const partId = parseInt(e.dataTransfer.getData('text/plain'));
                 const slotId = parseInt(slot.dataset.slot);
                 
-                // Check if the part is placed in the correct slot
-                if (partId === slotId) {
-                    slot.innerHTML = '';
-                    const partClone = document.querySelector(`[data-part="${partId}"]`).cloneNode(true);
-                    partClone.setAttribute('draggable', 'false');
-                    slot.appendChild(partClone);
-                    
-                    // Update game state
-                    gameState.levelData[1].partsPlaced[slotId - 1] = partId;
-                    
-                    // Check if all parts are placed correctly
-                    checkLevel1Completion();
-                } else {
-                    // Wrong placement feedback
-                    showWrongPlacementFeedback(slot);
-                }
+                handlePartPlacement(partId, slotId, slot);
             });
         });
+        
+        // Helper function for both touch and drag events
+        function handlePartPlacement(partId, slotId, slot, draggedPart = null) {
+            // Clear any existing part in this slot
+            const existingPart = slot.querySelector('.part');
+            if (existingPart) {
+                slot.removeChild(existingPart);
+                // Reset the corresponding position in the game state
+                gameState.levelData[1].partsPlaced[slotId - 1] = 0;
+            }
+            
+            // Check if the part is placed in the correct slot
+            if (partId === slotId) {
+                // Get part element to clone (either from drag or directly for touch)
+                const sourceElement = draggedPart || document.querySelector(`[data-part="${partId}"]`);
+                const partClone = sourceElement.cloneNode(true);
+                
+                partClone.setAttribute('draggable', 'false');
+                partClone.classList.add('placed-part');
+                partClone.style.width = '100%';
+                partClone.style.height = '100%';
+                slot.appendChild(partClone);
+                
+                // Update game state
+                gameState.levelData[1].partsPlaced[slotId - 1] = partId;
+                
+                // Show correct placement feedback
+                slot.classList.add('correct');
+                updateGridbotMessage('level1-instructions', `Perfect! You placed the ${getOrdinalWord(partId)} part correctly!`);
+                setTimeout(() => {
+                    slot.classList.remove('correct');
+                }, 1000);
+                
+                // Check if all parts are placed correctly
+                checkLevel1Completion();
+            } else {
+                // Wrong placement feedback
+                showWrongPlacementFeedback(slot);
+                updateGridbotMessage('level1-instructions', `Hmm, that's not quite right. Remember, we need to place the ${getOrdinalWord(slotId)} part here.`);
+            }
+        }
+        
+        // Helper function to convert number to word
+        function getOrdinalWord(num) {
+            const words = ['', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'];
+            return words[num] || num + getOrdinalSuffix(num);
+        }
+        
+        // Add click event to check button
+        document.getElementById('level1-check').addEventListener('click', function() {
+            this.classList.add('button-pressed');
+            setTimeout(() => {
+                this.classList.remove('button-pressed');
+            }, 200);
+        });
+        
         
         // Level 2: Racers
         const racers = document.querySelectorAll('.racer');
@@ -378,9 +474,38 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function showWrongPlacementFeedback(element) {
         element.classList.add('wrong');
+        element.animate([
+            { transform: 'translateX(0)' },
+            { transform: 'translateX(-5px)' },
+            { transform: 'translateX(5px)' },
+            { transform: 'translateX(-5px)' },
+            { transform: 'translateX(0)' }
+        ], { 
+            duration: 500,
+            easing: 'ease-in-out'
+        });
+        
         setTimeout(() => {
             element.classList.remove('wrong');
         }, 500);
+    }
+    
+    /**
+     * Update GridBot message with optional animation
+     */
+    function updateGridbotMessage(elementId, message, withAnimation = false) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        
+        if (withAnimation) {
+            element.style.opacity = '0';
+            setTimeout(() => {
+                element.textContent = message;
+                element.style.opacity = '1';
+            }, 300);
+        } else {
+            element.textContent = message;
+        }
     }
     
     /**
@@ -418,6 +543,23 @@ document.head.appendChild(document.createElement('style')).innerHTML = `
         border: 2px solid #E74C3C !important;
     }
     
+    .correct {
+        animation: correct 0.5s;
+        border: 2px solid #2ECC71 !important;
+    }
+    
+    .placed-part {
+        margin: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    
+    .button-pressed {
+        transform: translateY(4px) !important;
+        box-shadow: 0 1px 0 darken(var(--primary-color), 10%) !important;
+    }
+    
     @keyframes shake {
         0% { transform: translateX(0); }
         25% { transform: translateX(-5px); }
@@ -428,6 +570,21 @@ document.head.appendChild(document.createElement('style')).innerHTML = `
     
     @keyframes wrong {
         0% { background-color: rgba(231, 76, 60, 0.3); }
-        100% { background-color: rgba(255, 255, 255, 0.6); }
+        100% { background-color: rgba(255, 255, 255, 0.2); }
+    }
+    
+    @keyframes correct {
+        0% { background-color: rgba(46, 204, 113, 0.3); }
+        50% { background-color: rgba(46, 204, 113, 0.5); }
+        100% { background-color: rgba(255, 255, 255, 0.2); }
+    }
+    
+    #level1-instructions {
+        transition: opacity 0.3s ease;
+    }
+    
+    .dragging {
+        opacity: 0.6;
+        z-index: 1000;
     }
 `;

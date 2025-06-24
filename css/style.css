@@ -133,6 +133,10 @@ h2 {
     padding: 15px;
     width: 70%;
     box-shadow: var(--shadow);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .speech-bubble::before {
@@ -305,10 +309,12 @@ h2 {
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-gap: 20px;
+    height: 100%;
+    position: relative;
 }
 
 .car-assembly-area {
-    background-image: url('../images/garage-bg.png');
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     background-size: cover;
     background-position: center;
     border-radius: var(--border-radius);
@@ -318,14 +324,48 @@ h2 {
     justify-content: center;
     align-items: center;
     position: relative;
+    border: 2px solid #333;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.car-assembly-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: repeating-linear-gradient(
+        -45deg,
+        #333,
+        #333 10px,
+        #555 10px,
+        #555 20px
+    );
+    opacity: 0.2;
 }
 
 .car-base {
     width: 300px;
     height: 150px;
-    background-color: #ddd;
+    background: linear-gradient(to bottom, #7d7e7d 0%,#0e0e0e 100%);
     border-radius: 20px;
     position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    border: 1px solid #666;
+    margin-bottom: 30px;
+}
+
+.car-base::after {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    bottom: 20px;
+    left: 10%;
+    border-radius: 50%;
 }
 
 .part-slots {
@@ -333,44 +373,78 @@ h2 {
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .part-slot {
     width: 80px;
     height: 80px;
-    border: 2px dashed var(--primary-color);
+    border: 3px dashed var(--primary-color);
     border-radius: 10px;
     margin: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.part-slot.highlight {
+    border-color: var(--success-color);
+    background-color: rgba(46, 204, 113, 0.2);
+    transform: scale(1.05);
 }
 
 .parts-selection {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    padding: 10px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: 100%;
+    overflow-y: auto;
 }
 
 .part {
-    background-color: var(--primary-color);
+    background: linear-gradient(to bottom, var(--primary-color) 0%, darken(var(--primary-color), 15%) 100%);
     color: white;
-    padding: 10px;
+    padding: 15px;
     border-radius: 8px;
     text-align: center;
     cursor: grab;
     transition: all 0.2s ease;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.part::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px 4px 0 0;
 }
 
 .part:hover {
     transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 .part:active {
     cursor: grabbing;
+    transform: scale(0.98);
 }
 
 .gridbot-interface {
@@ -378,7 +452,11 @@ h2 {
     bottom: 20px;
     left: 20px;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
+    z-index: 10;
+    width: 85%;
+    min-height: 80px;
+    max-height: 120px;
 }
 
 .gridbot-small {
@@ -387,6 +465,41 @@ h2 {
     background-color: var(--primary-color);
     border-radius: 50%;
     margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+.gridbot-small::after {
+    content: '';
+    width: 40px;
+    height: 40px;
+    background-color: var(--light-color);
+    border-radius: 50%;
+    position: relative;
+}
+
+.gridbot-small::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    bottom: 15px;
+    z-index: 2;
+}
+
+.gridbot-interface .speech-bubble {
+    max-width: calc(100% - 80px);
+    font-size: 0.9rem;
+    overflow-y: auto;
+    max-height: 100px;
+    display: flex;
+    align-items: center;
 }
 
 /* Level 2: Rank Rally */
