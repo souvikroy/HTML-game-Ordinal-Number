@@ -1,0 +1,520 @@
+/* Main Styles for Ordinal Odyssey */
+:root {
+    --primary-color: #4D5BF0;
+    --secondary-color: #FF9D33;
+    --success-color: #2ECC71;
+    --warning-color: #F1C40F;
+    --danger-color: #E74C3C;
+    --dark-color: #2C3E50;
+    --light-color: #ECF0F1;
+    --background-color: #F7F9FC;
+    --text-color: #333333;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Baloo 2', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Container */
+#game-container {
+    max-width: 1000px;
+    height: 700px;
+    margin: 20px auto;
+    position: relative;
+    background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+/* Screens */
+.game-screen {
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.game-screen.active {
+    display: flex;
+}
+
+/* Start Screen */
+.logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 0 var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: var(--dark-color);
+}
+
+.gridbot-container {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.gridbot {
+    width: 120px;
+    height: 120px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--shadow);
+    margin-right: 20px;
+}
+
+.gridbot-face {
+    width: 80px;
+    height: 80px;
+    background-color: var(--light-color);
+    border-radius: 50%;
+    position: relative;
+}
+
+.gridbot-face::before, .gridbot-face::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    top: 25px;
+}
+
+.gridbot-face::before {
+    left: 15px;
+}
+
+.gridbot-face::after {
+    right: 15px;
+}
+
+.gridbot-face::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 15px;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    bottom: 15px;
+    left: 20px;
+}
+
+.speech-bubble {
+    position: relative;
+    background: var(--light-color);
+    border-radius: 15px;
+    padding: 15px;
+    width: 70%;
+    box-shadow: var(--shadow);
+}
+
+.speech-bubble::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 8px 15px 8px 0;
+    border-style: solid;
+    border-color: transparent var(--light-color) transparent transparent;
+}
+
+/* Buttons */
+.primary-button, .secondary-button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 10px;
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 0 darken(var(--primary-color), 10%);
+}
+
+.primary-button:hover {
+    background-color: lighten(var(--primary-color), 5%);
+    transform: translateY(-2px);
+}
+
+.primary-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 0 darken(var(--primary-color), 10%);
+}
+
+.primary-button:disabled {
+    background-color: #a0a0a0;
+    cursor: not-allowed;
+}
+
+.secondary-button {
+    background-color: var(--secondary-color);
+    color: white;
+    box-shadow: 0 4px 0 darken(var(--secondary-color), 10%);
+}
+
+.secondary-button:hover {
+    background-color: lighten(var(--secondary-color), 5%);
+    transform: translateY(-2px);
+}
+
+.secondary-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 0 darken(var(--secondary-color), 10%);
+}
+
+/* Level Select Screen */
+.level-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px;
+    width: 100%;
+    max-width: 900px;
+}
+
+.level-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.level-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.level-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.level-card p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.level-status {
+    font-size: 0.8rem;
+    color: var(--dark-color);
+    font-weight: 600;
+}
+
+.level-card.locked {
+    opacity: 0.7;
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+.level-card.locked::before {
+    content: '🔒';
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* How to Play Screen */
+.instructions {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: var(--shadow);
+}
+
+.instructions h3 {
+    margin: 15px 0 10px;
+    color: var(--primary-color);
+}
+
+.instructions ul {
+    list-style-position: inside;
+    margin-left: 15px;
+}
+
+/* Level Screens */
+.level-header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.level-info {
+    font-size: 1.2rem;
+    color: var(--dark-color);
+    font-weight: 600;
+}
+
+.game-area {
+    width: 100%;
+    height: 500px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: var(--shadow);
+}
+
+.level-controls {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Level 1: The Initiation Garage */
+.garage-game {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 20px;
+}
+
+.car-assembly-area {
+    background-image: url('../images/garage-bg.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: var(--border-radius);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.car-base {
+    width: 300px;
+    height: 150px;
+    background-color: #ddd;
+    border-radius: 20px;
+    position: relative;
+}
+
+.part-slots {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.part-slot {
+    width: 80px;
+    height: 80px;
+    border: 2px dashed var(--primary-color);
+    border-radius: 10px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.parts-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+}
+
+.part {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: grab;
+    transition: all 0.2s ease;
+}
+
+.part:hover {
+    transform: scale(1.05);
+}
+
+.part:active {
+    cursor: grabbing;
+}
+
+.gridbot-interface {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.gridbot-small {
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Level 2: Rank Rally */
+.rally-game {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 20px;
+}
+
+.race-grid {
+    background-image: url('../images/race-track.png');
+    background-size: cover;
+    height: 200px;
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-positions {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.grid-position {
+    height: 80px;
+    border: 2px dashed var(--dark-color);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    font-weight: bold;
+}
+
+.racers-selection {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 15px;
+    padding: 20px;
+}
+
+.racer {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    cursor: grab;
+}
+
+.racer:hover {
+    transform: scale(1.1);
+}
+
+.racer.red { background-color: #E74C3C; }
+.racer.blue { background-color: #3498DB; }
+.racer.green { background-color: #2ECC71; }
+.racer.yellow { background-color: #F1C40F; }
+.racer.purple { background-color: #9B59B6; }
+.racer.orange { background-color: #E67E22; }
+.racer.black { background-color: #34495E; }
+.racer.white { background-color: #ECF0F1; border: 1px solid #BDC3C7; }
+.racer.pink { background-color: #FF78CB; }
+.racer.teal { background-color: #1ABC9C; }
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    max-width: 500px;
+    width: 80%;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.stars-container {
+    margin: 20px 0;
+}
+
+.star {
+    font-size: 2.5rem;
+    color: #ccc;
+    margin: 0 5px;
+}
+
+.star.active {
+    color: var(--warning-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #game-container {
+        height: auto;
+        min-height: 700px;
+    }
+
+    .level-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .garage-game {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-positions {
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+}

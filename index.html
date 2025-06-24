@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordinal Odyssey: Race for the Golden Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="start-screen" class="game-screen active">
+            <div class="logo-container">
+                <h1>Ordinal Odyssey</h1>
+                <h2>Race for the Golden Grid</h2>
+            </div>
+            <div class="gridbot-container">
+                <div class="gridbot">
+                    <div class="gridbot-face"></div>
+                </div>
+                <div class="speech-bubble">
+                    <p>Hi! I'm GridBot, your Learning Navigator! Ready to learn ordinal numbers and win the race? Let's start our adventure!</p>
+                </div>
+            </div>
+            <button id="start-button" class="primary-button">Start Game</button>
+            <button id="how-to-play-button" class="secondary-button">How to Play</button>
+        </div>
+
+        <div id="level-select-screen" class="game-screen">
+            <h2>Choose Your Challenge</h2>
+            <div class="level-grid">
+                <div class="level-card" data-level="1">
+                    <h3>1st Level</h3>
+                    <p>The Initiation Garage</p>
+                    <span class="level-status">Build Your Racer</span>
+                </div>
+                <div class="level-card locked" data-level="2">
+                    <h3>2nd Level</h3>
+                    <p>Rank Rally</p>
+                    <span class="level-status">Start Grid Simulation</span>
+                </div>
+                <div class="level-card locked" data-level="3">
+                    <h3>3rd Level</h3>
+                    <p>Traffic School</p>
+                    <span class="level-status">License to Learn</span>
+                </div>
+                <div class="level-card locked" data-level="4">
+                    <h3>4th Level</h3>
+                    <p>Red Light Reflex</p>
+                    <span class="level-status">Stop & Respond</span>
+                </div>
+                <div class="level-card locked" data-level="5">
+                    <h3>5th Level</h3>
+                    <p>The Pit Strategy</p>
+                    <span class="level-status">Fix in Order</span>
+                </div>
+                <div class="level-card locked" data-level="6">
+                    <h3>6th Level</h3>
+                    <p>Signal Sync Battle</p>
+                    <span class="level-status">Race Smart</span>
+                </div>
+                <div class="level-card locked" data-level="7">
+                    <h3>7th Level</h3>
+                    <p>Timeline Tournament</p>
+                    <span class="level-status">Date Dash</span>
+                </div>
+                <div class="level-card locked" data-level="8">
+                    <h3>8th Level</h3>
+                    <p>Garage Mastermind</p>
+                    <span class="level-status">Command the Crew</span>
+                </div>
+                <div class="level-card locked" data-level="9">
+                    <h3>9th Level</h3>
+                    <p>Judgment Circuit</p>
+                    <span class="level-status">Who Finished Where?</span>
+                </div>
+                <div class="level-card locked" data-level="10">
+                    <h3>10th Level</h3>
+                    <p>Hall of Fame</p>
+                    <span class="level-status">Ordinal Glory</span>
+                </div>
+            </div>
+            <button id="back-to-start" class="secondary-button">Back</button>
+        </div>
+
+        <div id="how-to-play-screen" class="game-screen">
+            <h2>How to Play</h2>
+            <div class="instructions">
+                <p>Welcome to Ordinal Odyssey! This game will help you learn ordinal numbers (1st through 10th) through fun racing challenges.</p>
+                <h3>What You'll Learn:</h3>
+                <ul>
+                    <li>How to recognize and use ordinal numbers</li>
+                    <li>Understanding positions in a sequence</li>
+                    <li>Solving problems using ordinal numbers</li>
+                </ul>
+                <h3>Controls:</h3>
+                <ul>
+                    <li>Click or tap on objects to select them</li>
+                    <li>Drag and drop items to place them</li>
+                    <li>Follow GridBot's instructions to complete each level</li>
+                </ul>
+            </div>
+            <button id="back-from-help" class="secondary-button">Back</button>
+        </div>
+
+        <!-- Level 1: The Initiation Garage -->
+        <div id="level-1" class="game-screen level-screen">
+            <div class="level-header">
+                <h2>Level 1: The Initiation Garage</h2>
+                <div class="level-info">Build Your Racer</div>
+            </div>
+            
+            <div class="game-area garage-game">
+                <div class="car-assembly-area">
+                    <div class="car-base"></div>
+                    <div class="part-slots">
+                        <div class="part-slot" data-slot="1"></div>
+                        <div class="part-slot" data-slot="2"></div>
+                        <div class="part-slot" data-slot="3"></div>
+                        <div class="part-slot" data-slot="4"></div>
+                        <div class="part-slot" data-slot="5"></div>
+                    </div>
+                </div>
+                
+                <div class="parts-selection">
+                    <div class="part" data-part="1" draggable="true">1st Engine</div>
+                    <div class="part" data-part="2" draggable="true">2nd Wheels</div>
+                    <div class="part" data-part="3" draggable="true">3rd Spoiler</div>
+                    <div class="part" data-part="4" draggable="true">4th Paint</div>
+                    <div class="part" data-part="5" draggable="true">5th Lights</div>
+                </div>
+                
+                <div class="gridbot-interface">
+                    <div class="gridbot-small"></div>
+                    <div class="speech-bubble">
+                        <p id="level1-instructions">Build your race car by placing the parts in the correct order. Start with the 1st part and continue through the 5th part.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="level-controls">
+                <button class="level-back-button secondary-button">Back to Levels</button>
+                <button id="level1-check" class="primary-button" disabled>Check My Car</button>
+            </div>
+        </div>
+
+        <!-- Level 2: Rank Rally -->
+        <div id="level-2" class="game-screen level-screen">
+            <div class="level-header">
+                <h2>Level 2: Rank Rally</h2>
+                <div class="level-info">Start Grid Simulation</div>
+            </div>
+            
+            <div class="game-area rally-game">
+                <div class="race-grid">
+                    <div class="grid-positions">
+                        <div class="grid-position" data-position="1">1st</div>
+                        <div class="grid-position" data-position="2">2nd</div>
+                        <div class="grid-position" data-position="3">3rd</div>
+                        <div class="grid-position" data-position="4">4th</div>
+                        <div class="grid-position" data-position="5">5th</div>
+                        <div class="grid-position" data-position="6">6th</div>
+                        <div class="grid-position" data-position="7">7th</div>
+                        <div class="grid-position" data-position="8">8th</div>
+                        <div class="grid-position" data-position="9">9th</div>
+                        <div class="grid-position" data-position="10">10th</div>
+                    </div>
+                </div>
+                
+                <div class="racers-selection">
+                    <div class="racer red" data-racer="red" draggable="true"></div>
+                    <div class="racer blue" data-racer="blue" draggable="true"></div>
+                    <div class="racer green" data-racer="green" draggable="true"></div>
+                    <div class="racer yellow" data-racer="yellow" draggable="true"></div>
+                    <div class="racer purple" data-racer="purple" draggable="true"></div>
+                    <div class="racer orange" data-racer="orange" draggable="true"></div>
+                    <div class="racer black" data-racer="black" draggable="true"></div>
+                    <div class="racer white" data-racer="white" draggable="true"></div>
+                    <div class="racer pink" data-racer="pink" draggable="true"></div>
+                    <div class="racer teal" data-racer="teal" draggable="true"></div>
+                </div>
+                
+                <div class="gridbot-interface">
+                    <div class="gridbot-small"></div>
+                    <div class="speech-bubble">
+                        <p id="level2-instructions">Place the racers in their correct positions based on these rules:<br>
+                        The yellow racer is 3rd.<br>
+                        The blue racer is just ahead of yellow.<br>
+                        The red racer is 5th.<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="level-controls">
+                <button class="level-back-button secondary-button">Back to Levels</button>
+                <button id="level2-check" class="primary-button" disabled>Check Positions</button>
+            </div>
+        </div>
+
+        <!-- Feedback modal -->
+        <div id="feedback-modal" class="modal">
+            <div class="modal-content">
+                <h3 id="feedback-title">Great Job!</h3>
+                <p id="feedback-message">You've completed the level successfully!</p>
+                <div class="stars-container">
+                    <span class="star active">★</span>
+                    <span class="star active">★</span>
+                    <span class="star active">★</span>
+                </div>
+                <button id="next-level-button" class="primary-button">Next Level</button>
+                <button id="retry-level-button" class="secondary-button">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+</html>
