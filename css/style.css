@@ -447,59 +447,50 @@ h2 {
     transform: scale(0.98);
 }
 
-.gridbot-interface {
+.instruction-panel {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    top: -80px;
+    left: 0;
+    width: 100%;
+    background-color: var(--light-color);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: var(--shadow);
+    z-index: 100;
     display: flex;
-    align-items: flex-start;
-    z-index: 10;
-    width: 85%;
-    min-height: 80px;
-    max-height: 120px;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.gridbot-small {
-    width: 60px;
-    height: 60px;
+.instruction-panel .gridbot-icon {
+    width: 40px;
+    height: 40px;
     background-color: var(--primary-color);
     border-radius: 50%;
     margin-right: 10px;
+    flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    flex-shrink: 0;
 }
 
-.gridbot-small::after {
+.instruction-panel .gridbot-icon::after {
     content: '';
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
     background-color: var(--light-color);
     border-radius: 50%;
     position: relative;
 }
 
-.gridbot-small::before {
-    content: '';
-    position: absolute;
-    width: 30px;
-    height: 10px;
-    border-radius: 5px;
-    background-color: var(--primary-color);
-    bottom: 15px;
-    z-index: 2;
-}
-
-.gridbot-interface .speech-bubble {
-    max-width: calc(100% - 80px);
+.instruction-panel .instruction-text {
+    flex: 1;
     font-size: 0.9rem;
-    overflow-y: auto;
-    max-height: 100px;
-    display: flex;
-    align-items: center;
+    font-weight: 500;
+    color: var(--dark-color);
+    margin: 0 10px;
+    line-height: 1.2;
 }
 
 /* Level 2: Rank Rally */
